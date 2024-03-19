@@ -13,9 +13,10 @@ class KategoriController extends Controller
 {
     public function index()
     {
-        $categories = Kategori::all();
+        $categories = Kategori::latest()->get();
         return view('Page.Kategori.show', compact('categories'));
     }
+    
 
     public function create()
     {

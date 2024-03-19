@@ -15,10 +15,10 @@ class DepositUsdController extends Controller
         // Periksa apakah pengguna yang sedang login memiliki mata uang USD
         if (Auth::check() && Auth::user()->currency === 'USD') {
             $daftarSaldos = DaftarSaldo::all();
-            return view('website.deposit_usd', compact('daftarSaldos'));
+            return view('Website.deposit_usd', compact('daftarSaldos'));
         } else {
             // Redirect pengguna ke halaman profil mereka jika mata uang tidak sesuai
-            return redirect()->route('website.profil');
+            return redirect()->route('Website.profil');
         }
     }
 
@@ -89,7 +89,7 @@ class DepositUsdController extends Controller
         ]);
 
         // Meneruskan data yang diperlukan ke view 'website.invoiceusd'
-        return view('website.invoice.invoiceusd')->with([
+        return view('website.Invoice.invoiceusd')->with([
             'paymentId' => $paymentId,
             'userName' => $user->name,
             'paymentStatus' => $response['status'],

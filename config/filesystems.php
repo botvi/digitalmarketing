@@ -43,6 +43,13 @@ return [
             'visibility' => 'public',
         ],
 
+        // 'public' => [
+        //     'driver' => 'local',
+        //     'root' => '/home/jznzyogy/tester.pandekakode.com', // Pastikan 'root' menunjuk ke public_path()
+        //     'url' => env('APP_URL').'/icon',
+        //     'visibility' => 'public',
+        // ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

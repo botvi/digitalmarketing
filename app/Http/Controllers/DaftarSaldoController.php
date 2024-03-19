@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\DaftarSaldo;
+use App\Models\DepositIdr;
+use App\Models\DepositUsd;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Http;
 
 class DaftarSaldoController extends Controller
 {
+ public function riwayatdeposit(){
+    
+        $depositsUsd = DepositUsd::all();
+        $depositsIdr = DepositIdr::all();
 
+        return view('Page.Deposit.show', compact('depositsUsd', 'depositsIdr'));
+    
+ }
  
     public function index()
 {
@@ -79,7 +88,7 @@ public function store(Request $request)
  public function edit($id)
  {
      $daftarsaldo = DaftarSaldo::findOrFail($id);
-     return view('page.DaftarSaldo.edit', compact('daftarsaldo'));
+     return view('Page.DaftarSaldo.edit', compact('daftarsaldo'));
  }
 
  public function update(Request $request, $id)

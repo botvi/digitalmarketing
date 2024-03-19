@@ -16,12 +16,19 @@ return new class extends Migration
         Schema::create('order_produk', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('produk_id')->constrained()->onDelete('cascade');
+            $table->json('produk');
             $table->decimal('harga', 10, 2);
+            $table->string('nama_kategori'); // Tambahkan kolom nama_kategori
+            $table->text('keterangan'); // Tambahkan kolom keterangan
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::dropIfExists('order_produk');

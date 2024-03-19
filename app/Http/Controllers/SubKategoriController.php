@@ -11,22 +11,22 @@ class SubKategoriController extends Controller
 {
     public function index()
     {
-        $subKategoris = SubKategori::with('kategori')->get();
-        return view('Page.subkategori.show', compact('subKategoris'));
+        $subKategoris = SubKategori::with('kategori')->latest()->get();
+        return view('Page.SubKategori.show', compact('subKategoris'));
     }
 
 
 public function create()
 {
     $categories = Kategori::all();
-    return view('Page.subkategori.form', compact('categories'));
+    return view('Page.SubKategori.form', compact('categories'));
 }
 
 public function edit($id)
 {
     $subKategori = SubKategori::findOrFail($id);
     $categories = Kategori::all();
-    return view('Page.subkategori.edit', compact('subKategori', 'categories'));
+    return view('Page.SubKategori.edit', compact('subKategori', 'categories'));
 }
 
     public function store(Request $request)

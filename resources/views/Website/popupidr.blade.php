@@ -43,7 +43,7 @@ Coded by www.creative-tim.com
 
 <body class="index-page">
     <!-- Navbar -->
-    @include('website.navbar')
+    @include('Website.navbar')
 
 
 
@@ -53,6 +53,8 @@ Coded by www.creative-tim.com
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- your HTML code -->
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $snapToken }}"></script>
+    {{-- <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ $snapToken }}"></script> --}}
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Include axios library -->
 
     <script type="text/javascript">

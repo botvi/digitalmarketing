@@ -2,9 +2,16 @@
     <div class="sidebar-wrapper active">
         <div class="sidebar-header">
             <div class="d-flex justify-content-between">
+                @php
+                    // Ambil data ikon dari setting pertama yang ditemukan
+                    $setting = \App\Models\Setting::first();
+                    $icon = $setting ? asset($setting->icon) : ''; // Periksa apakah setting ditemukan sebelum mengakses ikon
+                @endphp
                 <div class="logo">
+
                     {{-- <a href="index.html"><img src="" alt="Logo" srcset=""></a> --}}
-                    <h3 class="primary">PandekaStore</h3>
+                    <h5 class="primary"> <img src="{{ $icon }}"
+                            style="height: 60px; width: auto; margin-right: 10px;"> {{ env('APP_NAME') }}</h5>
                 </div>
                 <div class="toggler">
                     <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -16,7 +23,7 @@
                 <li class="sidebar-title">Menu</li>
 
                 <li class="sidebar-item">
-                    <a href="/" class='sidebar-link'>
+                    <a href="/dashboard" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -41,11 +48,17 @@
                         </li>
                     </ul>
                 </li>
-               
+
                 <li class="sidebar-item">
                     <a href="/produk" class='sidebar-link'>
                         <i class="bi bi-ui-checks"></i>
                         <span>Produk</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/riwayatorder" class='sidebar-link'>
+                        <i class="bi bi-clock-history"></i>
+                        <span>History Orders</span>
                     </a>
                 </li>
                 <li class="sidebar-item  has-sub">
@@ -67,6 +80,12 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/setting" class='sidebar-link'>
+                        <i class="bi bi-gear"></i>
+                        <span>Setting Website</span>
+                    </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="/logout" class='sidebar-link'>

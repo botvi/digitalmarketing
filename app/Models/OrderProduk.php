@@ -14,6 +14,8 @@ class OrderProduk extends Model
         'user_id',
         'produk_id',
         'harga',
+        'nama_kategori',
+        'keterangan',
     ];
 
     public function user()

@@ -22,6 +22,7 @@ class DepositIdrController extends Controller
     {
         $this->serverKey = env('MIDTRANS_SERVER_KEY');
         $this->clientKey = env('MIDTRANS_CLIENT_KEY');
+        // $this->isSandbox = false; // Ubah menjadi false untuk tidak menggunakan sandbox
         $this->isSandbox = env('MIDTRANS_IS_SANDBOX');
     }
 
@@ -31,7 +32,7 @@ class DepositIdrController extends Controller
         // Periksa apakah pengguna yang sedang login memiliki mata uang USD
         if (Auth::check() && Auth::user()->currency === 'IDR') {
             $daftarSaldos = DaftarSaldo::all();
-            return view('website.deposit_idr', compact('daftarSaldos'));
+            return view('Website.deposit_idr', compact('daftarSaldos'));
         } else {
             // Redirect pengguna ke halaman profil mereka jika mata uang tidak sesuai
             return redirect()->route('website.profil');
@@ -75,7 +76,7 @@ class DepositIdrController extends Controller
     $deposit->save();
 
     // Tampilkan popup pembayaran
-    return view('website.popupidr', compact('snapToken'));
+    return view('Website.popupidr', compact('snapToken'));
 }
 
     
@@ -163,7 +164,7 @@ public function checkTransactionStatus($paymentId)
 }
 
 public function invoiceird(){
-return view('website.invoice.invoiceird');
+return view('Website.Invoice.invoiceird');
 }
 
 }

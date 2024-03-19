@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kategori_id')->constrained('kategoris')->onDelete('cascade');
             $table->foreignId('subkategori_id')->constrained('sub_kategoris')->onDelete('cascade');
-            $table->string('keterangan');
-            $table->string('produk');
-            $table->integer('stok');
+            $table->longText('keterangan');
+            $table->longText('deskripsi');
+            $table->json('produk');
             $table->integer('idr'); // Price in IDR
             $table->decimal('usd', 10, 2); // Price in USD with 2 decimal places
             $table->timestamps();

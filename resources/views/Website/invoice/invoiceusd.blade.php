@@ -52,7 +52,7 @@
 
 <body class="index-page">
     <!-- Navbar -->
-    @include('website.navbar')
+    @include('Website.navbar')
 
     <div class="container d-flex justify-content-center mt-5">
         <div class="card">

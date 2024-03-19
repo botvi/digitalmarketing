@@ -93,7 +93,7 @@
 
 <body class="index-page">
     <!-- Navbar -->
-    @include('website.navbar')
+    @include('Website.navbar')
 
     <div class="container container-deposit mt-4">
         <form action="{{ route('paypal') }}" method="post">

@@ -35,6 +35,10 @@ Coded by www.creative-tim.com
     <link href="{{ asset('web') }}/assets/css/argon-design-system.css?v=1.2.2" rel="stylesheet" />
 
     <style>
+        body {
+            background-color: #eee
+        }
+
         @media (max-width: 1023px) {
             #section-title {
                 display: none;
@@ -67,30 +71,37 @@ Coded by www.creative-tim.com
             font-weight: 600;
             font-size: 15px
         }
+
+        /*
+        .shape-image {
+            background-image: url({{ asset('web/assets/img/brand/bgindex4.jpg') }});
+            background-size: cover;
+            background-position: center;
+        } */
     </style>
 </head>
 
 <body class="index-page">
     <!-- Navbar -->
-    @include('website.navbar')
+    @include('Website.navbar')
 
     <!-- End Navbar -->
     <div class="wrapper">
         <div class="section section-hero section-shaped">
             <div class="shape shape-style-1 shape-primary">
                 {{-- <span class="span-150"></span>
-        <span class="span-50"></span>
-        <span class="span-50"></span>
-        <span class="span-75"></span>
-        <span class="span-100"></span>
-        <span class="span-75"></span>
-        <span class="span-50"></span>
-        <span class="span-100"></span>
-        <span class="span-50"></span>
-        <span class="span-100"></span> --}}
+                <span class="span-50"></span>
+                <span class="span-50"></span>
+                <span class="span-75"></span>
+                <span class="span-100"></span>
+                <span class="span-75"></span>
+                <span class="span-50"></span>
+                <span class="span-100"></span>
+                <span class="span-50"></span>
+                <span class="span-100"></span> --}}
             </div>
             <div class="page-header">
-                <div class="container shape-container d-flex align-items-center py-lg">
+                <div class="container shape-container d-flex align-items-center ">
                     <div class="col px-0">
                         <div class="row align-items-center justify-content-center">
                             <div class="col-lg-6 text-center">
@@ -107,7 +118,7 @@ Coded by www.creative-tim.com
 
                                 <div class="btn-wrapper mt-5">
                                     <div class="dropup mb-3">
-                                        <div class="btn btn-github" href="javascript:;" role="button"
+                                        <div class="btn btn-primary" href="javascript:;" role="button"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="p-5">Category <i class="fa fa-bars ml-3"
                                                     aria-hidden="true"></i>
@@ -115,7 +126,7 @@ Coded by www.creative-tim.com
                                         </div>
                                         <div class="dropdown-menu">
                                             @foreach ($categories as $kategori)
-                                                <a href="#" class="dropdown-item">
+                                                <a href="#" class="dropdown-item" data-id="{{ $kategori->id }}">
                                                     @if ($kategori->icon)
                                                         <img src="{{ asset('/' . $kategori->icon) }}"
                                                             alt="{{ $kategori->nama_kategori }}" width="30"
@@ -135,11 +146,9 @@ Coded by www.creative-tim.com
                                                 <span class="input-group-text"><i
                                                         class="ni ni-zoom-split-in"></i></span>
                                             </div>
-                                            <input class="form-control form-control-alternative mr-2"
+                                            <input id="searchInput" class="form-control form-control-alternative mr-2"
                                                 placeholder="Input name product.." type="text">
-                                            <button type="button" class="btn btn-primary" data-mdb-ripple-init>
-                                                <i class="fas fa-search"></i>
-                                            </button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -153,18 +162,18 @@ Coded by www.creative-tim.com
                     </div>
                 </div>
             </div>
-            <div class="separator separator-bottom separator-skew zindex-100">
+            {{-- <div class="separator separator-bottom separator-skew zindex-100">
                 <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
                     xmlns="http://www.w3.org/2000/svg">
                     <polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>
                 </svg>
-            </div>
+            </div> --}}
         </div>
     </div>
-    <div class="section">
+    <div class="section" style="margin-top: -80px;">
         <div class="container">
             <!-- Custom controls -->
-            <div class="row" id="section-title">
+            <div class="row" id="section-title" style="margin-bottom: -30px;">
                 <div class="col-lg-1 col-md-6 ml-4">
                     <!-- Checkboxes -->
                     <div class="">
@@ -192,7 +201,9 @@ Coded by www.creative-tim.com
 
                 </div>
             </div>
-
+            <div class="alert alert-default searchResult" role="alert" style="display: none;">
+                Search result...<i class="fa fa-search" aria-hidden="true"></i>
+            </div>
             @foreach ($categories as $category)
                 @foreach ($produks->where('kategori_id', $category->id)->groupBy('subkategori_id') as $subkategoriId => $produkGroup)
                     @php
@@ -205,6 +216,7 @@ Coded by www.creative-tim.com
                         @endif
                         {{ $category->nama_kategori }} || {{ $subkategori->nama_sub_kategori }}
                     </div>
+
                     <div class="table-responsive">
                         <table class="table">
                             <tbody>
@@ -213,13 +225,16 @@ Coded by www.creative-tim.com
                                         <td>
                                             @if ($category->icon)
                                                 <img src="{{ asset('/' . $category->icon) }}"
-                                                    alt="{{ $category->nama_kategori }}" width="25"
-                                                    height="25">
+                                                    alt="{{ $category->nama_kategori }}" width="25" height="25">
                                             @endif
                                         </td>
                                         <td colspan="3" class="col-lg-7"
-                                            style="font-size: 12px; font-weight:700;">{{ $produk->keterangan }}</td>
-                                        <td class="col-lg-1">{{ $produk->stok }} pcs.</td>
+                                            style="font-size: 12px; font-weight: 700;">
+                                            <a
+                                                href="{{ route('deskripsi.show', $produk->id) }}">{{ $produk->keterangan }}</a>
+                                        </td>
+
+                                        <td class="col-lg-1">{{ count($produk->produk) }} pcs.</td>
 
                                         <td class="col-lg-2">
                                             @if (Auth::check())
@@ -251,6 +266,9 @@ Coded by www.creative-tim.com
                                 @endforeach
                             </tbody>
                         </table>
+                        <!-- Tambahkan elemen untuk menampilkan pesan jika tidak ada hasil yang cocok -->
+                        <p id="noResult" style="display: none;">No matching results found.</p>
+
                     </div>
                 @endforeach
             @endforeach
@@ -293,6 +311,62 @@ Coded by www.creative-tim.com
                 application: "argon-design-system-pro"
             });
     </script>
+
+
+    {{-- FILTER --}}
+    <script>
+        $(document).ready(function() {
+            $('.dropdown-item').click(function() {
+                var kategoriId = $(this).data('id');
+                // Kirim ID kategori ke server atau lakukan tindakan yang diinginkan di sini
+                // Contoh: Redirect ke halaman dengan ID kategori
+                window.location.href = '/produkkategori/' + kategoriId;
+            });
+        });
+    </script>
+    {{-- SEARCH --}}
+    <script>
+        $(document).ready(function() {
+            $('#searchInput').on('input', function() {
+                var searchText = $(this).val().toLowerCase();
+                $('.table tbody tr').hide(); // Semua baris tabel disembunyikan terlebih dahulu
+                $('.table tbody tr').filter(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    return rowText.includes(searchText);
+                }).show();
+
+                // Menampilkan pesan jika tidak ada hasil yang cocok
+                if ($('.table tbody tr:visible').length === 0) {
+                    $('#noResult').show();
+                } else {
+                    $('#noResult').hide();
+                }
+
+                // Menyembunyikan thead jika tidak ada hasil yang cocok
+                if ($('.table tbody tr:visible').length === 0) {
+                    $('.table thead').hide();
+                } else {
+                    $('.table thead').show();
+                }
+
+                // Tampilkan elemen dengan class alert jika searchInput kosong
+                if (searchText === '') {
+                    $('.alert').show();
+                    $('.searchResult').hide();
+
+
+                } else {
+                    $('.alert').hide();
+                    $('.searchResult').show();
+
+                }
+            });
+        });
+    </script>
+
+
+
+
 
 </body>
 

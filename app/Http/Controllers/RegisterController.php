@@ -19,7 +19,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        return view('Auth.register');
     }
 
     /**
@@ -42,7 +42,7 @@ class RegisterController extends Controller
         $location = GeoIP::getLocation($request->ip());
 
         // Tentukan mata uang berdasarkan negara pengguna
-        $currency = $location->country === 'ID' ? 'IDR' : 'USD';
+        $currency = $location->country === 'Indonesia' ? 'IDR' : 'USD';
 
         // Buat pengguna baru dengan mata uang yang dideteksi
         $user = User::create([

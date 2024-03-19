@@ -38,9 +38,16 @@ Coded by www.creative-tim.com
 
 <body class="index-page">
     <!-- Navbar -->
-    @include('website.navbar')
+    @include('Website.navbar')
 
     <<div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Profil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">History</li>
+            </ol>
+        </nav>
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">

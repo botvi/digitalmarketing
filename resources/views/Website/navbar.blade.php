@@ -1,8 +1,15 @@
 <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg bg-white navbar-light position-sticky top-0 shadow py-2">
     <div class="container">
-        <a class="navbar-brand mr-lg-5" href="/">
-            <img src="{{ asset('web') }}/assets/img/brand/blue.png">
+        @php
+            // Ambil data ikon dari setting pertama yang ditemukan
+            $setting = \App\Models\Setting::first();
+            $icon = $setting ? asset($setting->icon) : ''; // Periksa apakah setting ditemukan sebelum mengakses ikon
+        @endphp
+        <a class="navbar-brand mr-lg-5 d-flex align-items-center" href="/">
+            <img src="{{ $icon }}" style="height: 60px; width: auto; margin-right: 10px;">
         </a>
+
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global"
             aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -11,9 +18,11 @@
             <div class="navbar-collapse-header">
                 <div class="row">
                     <div class="col-6 collapse-brand">
-                        <a href="/">
-                            <img src="{{ asset('web') }}/assets/img/brand/blue.png">
+                        <a class="navbar-brand mr-lg-5 d-flex align-items-center" href="/">
+                            <img src="{{ $icon }}" style="height: 60px; width: auto; margin-right: 10px;">
+                            {{-- <span style="font-size: 10px; color:#5957f9; font-weight:900;"> Encorejeune </span> --}}
                         </a>
+
                     </div>
                     <div class="col-6 collapse-close">
                         <button type="button" class="navbar-toggler" data-toggle="collapse"
@@ -82,24 +91,32 @@
                     </div>
                 </li>
             </ul> --}}
+
+            @php
+                // Ambil data teks Instagram dari setting pertama yang ditemukan
+                $setting = \App\Models\Setting::first();
+                $instagramText = $setting ? $setting->instagram : '';
+                $facebookText = $setting ? $setting->facebook : '';
+                $twitterText = $setting ? $setting->twitter : '';
+            @endphp
             <ul class="navbar-nav align-items-lg-center ml-md-auto">
                 <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="https://www.facebook.com/CreativeTim/" target="_blank"
-                        data-toggle="tooltip" title="Like us on Facebook">
+                    <a class="nav-link nav-link-icon" href="{{ $facebookText }}" target="_blank" data-toggle="tooltip"
+                        title="Like us on Facebook">
                         <i class="fa fa-facebook-square"></i>
                         <span class="nav-link-inner--text d-lg-none">Facebook</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="https://www.instagram.com/creativetimofficial"
-                        target="_blank" data-toggle="tooltip" title="Follow us on Instagram">
+                    <a class="nav-link nav-link-icon" href="{{ $instagramText }}" target="_blank" data-toggle="tooltip"
+                        title="Follow us on Instagram">
                         <i class="fa fa-instagram"></i>
                         <span class="nav-link-inner--text d-lg-none">Instagram</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="https://twitter.com/creativetim" target="_blank"
-                        data-toggle="tooltip" title="Follow us on Twitter">
+                    <a class="nav-link nav-link-icon" href="{{ $twitterText }}" target="_blank" data-toggle="tooltip"
+                        title="Follow us on Twitter">
                         <i class="fa fa-twitter-square"></i>
                         <span class="nav-link-inner--text d-lg-none">Twitter</span>
                     </a>

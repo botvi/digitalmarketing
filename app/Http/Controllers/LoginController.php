@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function showLoginForm(){
         $user = Auth::user();
-        return view('auth.login', ['user' => $user]);
+        return view('Auth.login', ['user' => $user]);
     }
 
     public function login(Request $request)

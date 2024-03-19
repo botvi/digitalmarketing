@@ -6,10 +6,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\OrderProduk;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Redirect;
 use Auth;
+use Illuminate\Support\Facades\Response;
 
 class OrderProdukController extends Controller
 {
+
+    public function myorders()
+    {
+        // Mendapatkan ID pengguna yang sedang login
+        $userId = Auth::id();
+        
+        // Mengambil data order berdasarkan user_id yang login
+        $orders = OrderProduk::where('user_id', $userId)->get();
+    
+        return view('Website.order', compact('orders'));
+    }
     public function show($id)
     {
         $product = Produk::findOrFail($id);
@@ -26,43 +40,95 @@ class OrderProdukController extends Controller
     }
     
     public function confirm(Request $request)
-    {
-        // Validasi request
-        $request->validate([
-            'product_id' => 'required|exists:produks,id',
-        ]);
+{
+    // Validasi request
+    $request->validate([
+        'jumlah_stok' => 'required|integer|min:1', // Validasi jumlah stok yang ingin dibeli
+    ]);
 
-        // Ambil data produk dari database
-        $product = Produk::findOrFail($request->product_id);
+    // Ambil data produk dari database
+    $product = Produk::findOrFail($request->product_id);
 
-        // Ambil informasi user yang login
-        $user = Auth::user();
+    // Tentukan jumlah stok yang ingin dibeli
+    $jumlahStok = $request->jumlah_stok;
 
-        // Tentukan harga berdasarkan mata uang pengguna yang login
-        $userCurrency = $user->currency;
-        $price = ($userCurrency == 'IDR') ? $product->idr : $product->usd;
-
-        // Cek apakah saldo mencukupi
-        $balanceField = 'balance_' . strtolower($userCurrency);
-        if ($user->$balanceField < $price) {
-            return redirect()->back()->with('error', 'Saldo tidak mencukupi untuk melakukan pembelian.');
-        }
-
-        // Kurangi saldo pengguna
-        $user->$balanceField -= $price;
-        $user->save();
-
-        // Kurangi stok produk
-        $product->stok--;
-        $product->save();
-
-        // Simpan pembelian ke dalam tabel OrderProduk
-        $order = new OrderProduk;
-        $order->user_id = $user->id;
-        $order->produk_id = $product->id;
-        $order->harga = $price;
-        $order->save();
-
-        return redirect()->back()->with('success', 'Pembelian berhasil.');
+    // Validasi jumlah stok yang ingin dibeli dengan stok tersedia
+    if ($jumlahStok > count($product->produk)) {
+        // return redirect()->back()->with('error', 'Stok tidak mencukupi untuk melakukan pembelian.');
+        Alert::error('Error', 'Insufficient stock to make a purchase.');
+        return back();
     }
+
+    // Ambil informasi user yang login
+    $user = Auth::user();
+
+    // Tentukan harga berdasarkan mata uang pengguna yang login
+    $userCurrency = $user->currency;
+    $price = ($userCurrency == 'IDR') ? $product->idr : $product->usd;
+
+    // Cek apakah saldo mencukupi
+    $balanceField = 'balance_' . strtolower($userCurrency);
+    if ($user->$balanceField < ($price * $jumlahStok)) {
+        // return redirect()->back()->with('error', 'Saldo tidak mencukupi untuk melakukan pembelian.');
+        Alert::error('Error', 'Insufficient balance to make a purchase.');
+        return back();
+    }
+
+    // Kurangi saldo pengguna
+    $user->$balanceField -= ($price * $jumlahStok);
+    $user->save();
+
+    // Kurangi stok produk
+    $produkTerbeli = array_slice($product->produk, 0, $jumlahStok); // Ambil sejumlah stok yang ingin dibeli
+    $product->produk = array_slice($product->produk, $jumlahStok); // Hapus produk yang telah dibeli
+    $product->save();
+
+    // Simpan pembelian ke dalam tabel OrderProduk
+    $order = new OrderProduk;
+    $order->user_id = $user->id;
+    $order->harga = $price * $jumlahStok; // Harga total berdasarkan jumlah stok yang dibeli
+    $order->produk = json_encode($produkTerbeli); // Simpan produk yang dibeli ke OrderProduk
+
+    // Accessing kategori nama_kategori through relation
+    $order->nama_kategori = $product->kategori->nama_kategori; 
+
+    $order->keterangan = $product->keterangan; // Simpan keterangan produk
+    $order->save();
+
+    Alert::success('success', 'Purchase successful.');
+    return Redirect::route('order');
+}
+
+
+
+public function download($id)
+{
+    // Ambil data order berdasarkan ID
+    $order = OrderProduk::findOrFail($id);
+    $produk = json_decode($order->produk);
+
+    // Konten yang akan dimasukkan ke dalam file teks
+    $fileContent = "Products Purchased:\n";
+    foreach ($produk as $product) {
+        $fileContent .= "- $product\n";
+    }
+
+    // Buat nama file yang unik (contoh: produk_1.txt)
+    $filename = 'produk_' . $order->id . '.txt';
+
+    // Set header untuk mengindikasikan bahwa ini adalah file teks yang akan diunduh
+    $headers = [
+        'Content-Type' => 'text/plain',
+        'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+    ];
+
+    // Mengirim file teks sebagai respon download
+    return Response::streamDownload(function () use ($fileContent) {
+        echo $fileContent;
+    }, $filename, $headers);
+}
+
+    
+    
+    
 }

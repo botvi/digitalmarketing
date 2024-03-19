@@ -23,9 +23,22 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.0/css/responsive.dataTables.css">
-    
+
+    {{-- SUMMERNOTE --}}
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <style>
+        .dt-responsive td {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            /* Menetapkan lebar maksimum */
+        }
+    </style>
     @yield('style')
-  
+
 </head>
 
 <body>
@@ -55,41 +68,41 @@
     {{-- DATATABLES --}}
 
 
-
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-        <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
-        <script src="https://cdn.datatables.net/rowreorder/1.5.0/js/dataTables.rowReorder.js"></script>
-        <script src="https://cdn.datatables.net/rowreorder/1.5.0/js/rowReorder.dataTables.js"></script>
-        <script src="https://cdn.datatables.net/responsive/3.0.0/js/dataTables.responsive.js"></script>
-        <script src="https://cdn.datatables.net/responsive/3.0.0/js/responsive.dataTables.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}
+    <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.5.0/js/dataTables.rowReorder.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.5.0/js/rowReorder.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.0/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.0/js/responsive.dataTables.js"></script>
 
     <script>
         new DataTable('#example', {
-    responsive: true,
-    rowReorder: {
-        selector: 'td:nth-child(2)'
-    }
-});
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(7)'
+            },
+
+        });
     </script>
 
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var currentLocation = window.location.pathname;
-    
+
             var menuItems = document.querySelectorAll('.sidebar-item');
-    
+
             menuItems.forEach(function(item) {
                 var itemLink = item.querySelector('.sidebar-link');
                 var itemURL = itemLink.getAttribute('href');
-    
+
                 if (currentLocation === itemURL) {
                     item.classList.add('active');
                 }
             });
         });
     </script>
- 
+
 
     @yield('script')
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kategori;
+use App\Models\Setting;
 use App\Models\Produk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,14 +13,15 @@ class WebsiteController extends Controller
 {
     
 
+
     public function index()
-    {
+    { $settings = Setting::all(); 
         $produks = Produk::with('kategori', 'subkategori')->get();
         $categories = Kategori::all();
-        return view('website.index', compact('categories','produks'));
+        return view('Website.index', compact('categories','produks','settings'));
     }
     public function profil(){
-        return view('website.profil');
+        return view('Website.profil');
     }
   
 
@@ -66,6 +68,20 @@ public function updatePassword(Request $request)
     $user->save();
 
     return response()->json(['message' => 'Password updated successfully.']);
+}
+
+
+
+public function deskripsi($id)
+{
+    // Mengambil data produk berdasarkan ID
+    $produk = Produk::findOrFail($id);
+
+    // Mengambil data kategori terkait berdasarkan kategori_id dari produk
+    $kategori = Kategori::findOrFail($produk->kategori_id);
+
+    // Mengembalikan tampilan dengan data produk dan kategori
+    return view('Website.deskripsi', compact('produk', 'kategori'));
 }
 
 }
