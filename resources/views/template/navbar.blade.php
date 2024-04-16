@@ -82,6 +82,12 @@
                     </ul>
                 </li>
                 <li class="sidebar-item">
+                    <a href="/users" class='sidebar-link'>
+                        <i class="bi bi-people-fill"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a href="/setting" class='sidebar-link'>
                         <i class="bi bi-gear"></i>
                         <span>Setting Website</span>

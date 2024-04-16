@@ -19,11 +19,12 @@ class OrderProdukController extends Controller
         // Mendapatkan ID pengguna yang sedang login
         $userId = Auth::id();
         
-        // Mengambil data order berdasarkan user_id yang login
-        $orders = OrderProduk::where('user_id', $userId)->get();
+        // Mengambil data order berdasarkan user_id yang login dan mengurutkannya berdasarkan suatu kolom, misalnya 'created_at'
+        $orders = OrderProduk::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
     
         return view('Website.order', compact('orders'));
     }
+    
     public function show($id)
     {
         $product = Produk::findOrFail($id);
@@ -107,22 +108,18 @@ public function download($id)
     $order = OrderProduk::findOrFail($id);
     $produk = json_decode($order->produk);
 
-    // Konten yang akan dimasukkan ke dalam file teks
     $fileContent = "Products Purchased:\n";
     foreach ($produk as $product) {
         $fileContent .= "- $product\n";
     }
 
-    // Buat nama file yang unik (contoh: produk_1.txt)
     $filename = 'produk_' . $order->id . '.txt';
 
-    // Set header untuk mengindikasikan bahwa ini adalah file teks yang akan diunduh
     $headers = [
         'Content-Type' => 'text/plain',
         'Content-Disposition' => 'attachment; filename="' . $filename . '"',
     ];
 
-    // Mengirim file teks sebagai respon download
     return Response::streamDownload(function () use ($fileContent) {
         echo $fileContent;
     }, $filename, $headers);

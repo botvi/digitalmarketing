@@ -10,17 +10,19 @@ class Produk extends Model
     use HasFactory;
 
     protected $fillable = [
-        'kategori_id', // Tambahkan 'kategori_id' ke dalam properti fillable
+        'kategori_id',
         'subkategori_id',
         'keterangan',
         'deskripsi',
         'produk',
         'idr',
         'usd',
+        'gambar', // Tambahkan 'gambar' ke dalam properti fillable
     ];
 
     protected $casts = [
         'produk' => 'array',
+        'gambar' => 'array', // Tambahkan 'gambar' ke dalam properti casts
     ];
 
     public function kategori()
@@ -32,4 +34,6 @@ class Produk extends Model
     {
         return $this->belongsTo(SubKategori::class);
     }
+
+ 
 }

@@ -23,8 +23,9 @@
                                 <th>Sub Kategori</th>
                                 <th>Keterangan Produk</th>
                                 <th>Stok</th>
-                                <th>IRD</th>
+                                <th>IDR</th>
                                 <th>USD</th>
+                                <th>Gambar</th> <!-- Tambah kolom gambar -->
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -39,12 +40,18 @@
                                     <td>{{ $produk->kategori->nama_kategori }}</td>
                                     <td>{{ $produk->subkategori->nama_sub_kategori }}</td>
                                     <td>{{ $produk->keterangan }}</td>
-                                    <td>{{ count($produk->produk) }}</td>
+                                    <td>{{ is_array($produk->produk) ? count($produk->produk) : 0 }}</td>
                                     <td>IDR {{ number_format($produk->idr) }}</td>
                                     <td>$ {{ number_format($produk->usd, 2) }}</td>
                                     <td>
-                                        {{-- <button onclick="window.location='{{ route('produk.edit', $produk->id) }}'"
-                                        class="btn btn-sm btn-primary"><i class="bi bi-pencil-fill"></i></button> --}}
+                                        @foreach (json_decode($produk->gambar, true) as $gambar)
+                                            <img src="{{ asset('/' . $gambar) }}" alt="Gambar Produk" height="10px"
+                                                width="auto">
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        <button onclick="window.location='{{ route('produk.edit', $produk->id) }}'"
+                                            class="btn btn-sm btn-primary"><i class="bi bi-pencil-fill"></i></button>
                                         <form action="{{ route('produk.destroy', $produk->id) }}" method="POST"
                                             style="display: inline;" id="deleteForm">
                                             @csrf

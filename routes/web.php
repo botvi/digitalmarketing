@@ -21,7 +21,8 @@ use App\Http\Controllers\{
     SettingController,
     AdminOrderController,
     FilteringController,
-    ForgotPasswordController
+    ForgotPasswordController,
+    UserController
     
 };
 /*
@@ -137,10 +138,18 @@ Route::group([
 });
 
 
+// SHOW USERS
+Route::group([
+    'middleware' => ["auth"],
+], function ($router) {
+Route::get('/users', [UserController::class, 'show'])->middleware('role:admin');
+});
+
+
 
 // CONTENT DUMMY
 // Route::get('/ip', [GeoIPController::class, 'checkLocation']);
-// Route::get('/ipconvert', [GeoIPController::class, 'currencyconvertbylokasi']);
+Route::get('/ipconvert', [GeoIPController::class, 'currencyconvertbylokasi']);
 
 // Route::get('/deposit', [DepositController::class, 'showDepositForm'])->name('deposit.form');
 // Route::post('/deposit/process', [DepositController::class, 'processDeposit'])->name('deposit.process');
@@ -218,5 +227,5 @@ Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPass
 
 
 
-Route::get('/produkkategori/{id}', [FilteringController::class, 'indexByKategori']);
+Route::get('/produkkategori/{id}', [FilteringController::class, 'indexByKategori'])->name('produkkategori');
 Route::get('/deskripsi/{id}', [WebsiteController::class, 'deskripsi'])->name('deskripsi.show');

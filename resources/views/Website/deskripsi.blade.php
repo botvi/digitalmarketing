@@ -22,7 +22,7 @@
     <link href="{{ asset('web') }}/assets/css/argon-design-system.css?v=1.2.2" rel="stylesheet" />
     <style>
         body {
-            background-color: #dfdfdf;
+            background-color: #F2F2F2;
         }
 
         /* Memberikan jarak atas pada container */

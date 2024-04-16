@@ -1,4 +1,5 @@
-<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg bg-white navbar-light position-sticky top-0 shadow py-2">
+<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-dark position-sticky top-0 shadow py-2"
+    style="background-color: #5957f9;">
     <div class="container">
         @php
             // Ambil data ikon dari setting pertama yang ditemukan
@@ -8,6 +9,7 @@
         <a class="navbar-brand mr-lg-5 d-flex align-items-center" href="/">
             <img src="{{ $icon }}" style="height: 60px; width: auto; margin-right: 10px;">
         </a>
+
 
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global"
@@ -129,8 +131,8 @@
           </li> --}}
                 <li class="nav-item ml-md-5">
                     <a class="nav-link nav-link-icon" href="/order" data-toggle="tooltip" title="My Orders">
-                        <span class="text-primary"><i class="fa fa-shopping-bag" aria-hidden="true"></i></span>
-                        <span class="nav-link-inner--text text-default">My orders</span>
+                        <span class="nav-link-inner--text"><i class="fa fa-shopping-bag" aria-hidden="true"></i></span>
+                        <span class="nav-link-inner--text">My orders</span>
                     </a>
                 </li>
 
@@ -145,16 +147,18 @@
 
                 <li class="nav-item">
                     <a class="nav-link nav-link-icon" href="/profil" data-toggle="tooltip" title="Profil">
-                        <span class="mr-1 text-primary"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
-                        <span class="nav-link-inner--text text-default">Your Account</span>
+                        <span class="mr-1 nav-link-inner--text"><i class="fa fa-user-circle"
+                                aria-hidden="true"></i></span>
+                        <span class="nav-link-inner--text">Your Account</span>
                     </a>
                 </li>
             @else
                 <!-- Jika pengguna belum login, arahkan ke halaman login -->
                 <li class="nav-item">
                     <a class="nav-link nav-link-icon" href="/login" data-toggle="tooltip" title="Profil">
-                        <span class="mr-1 text-primary"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
-                        <span class="nav-link-inner--text text-default">Login</span>
+                        <span class="mr-1 nav-link-inner--text"><i class="fa fa-user-circle"
+                                aria-hidden="true"></i></span>
+                        <span class="nav-link-inner--text">Login</span>
                     </a>
                 </li>
                 @endif

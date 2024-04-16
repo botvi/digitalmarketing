@@ -16,9 +16,8 @@ class WebsiteController extends Controller
 
     public function index()
     { $settings = Setting::all(); 
-        $produks = Produk::with('kategori', 'subkategori')->get();
         $categories = Kategori::all();
-        return view('Website.index', compact('categories','produks','settings'));
+        return view('Website.index', compact('categories','settings'));
     }
     public function profil(){
         return view('Website.profil');

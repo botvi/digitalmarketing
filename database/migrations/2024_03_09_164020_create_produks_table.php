@@ -22,6 +22,7 @@ return new class extends Migration
             $table->json('produk');
             $table->integer('idr'); // Price in IDR
             $table->decimal('usd', 10, 2); // Price in USD with 2 decimal places
+            $table->json('gambar')->nullable(); // Tambahkan kolom gambar
             $table->timestamps();
         });
     }

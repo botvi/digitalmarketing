@@ -7,7 +7,7 @@
                 Tambah Produk
             </div>
             <div class="card-body">
-                <form action="{{ route('produk.store') }}" method="POST">
+                <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="kategori_id">Kategori:</label>
@@ -51,34 +51,40 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{-- <div class="form-group">
-                    <label for="produk">Produk:</label>
-                    <input type="text" name="produk" id="produk" class="form-control" required>
-                    @error('produk')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div> --}}
-
-                    <div id="produkakun-container" class="mb-5">
-                        <div class="produkakun-input">
-                            <label for="produkakun" class="form-label">Produk Akun:</label>
-                            <input type="text" id="produk" name="produk[]" class="form-control bg-warning" required
-                                placeholder="ex* Email:xxxxxxx, Password:xxxxxxxxx" style="height: 100px;">
-
-                        </div>
+                    <div class="form-group with-title mb-3">
+                        <textarea class="form-control" name="produk" id="produk"
+                            placeholder="ex* Email:xxxxxxx Password:xxxxxxxxx,Email:xxxxxxx Password:xxxxxxxxx NOTE : PISAHHKAN AKUN DENGAN KOMA"
+                            rows="3" required></textarea>
+                        <label for="produk">PRODUK</label>
+                        @error('produk')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
 
-                    <!-- Tombol untuk menambah inputan produk akun -->
-                    <button type="button" id="add-produkakun" class="btn btn-primary mb-2">Tambah Produk Akun</button>
 
 
-                    <div class="form-group mb5">
+
+
+                    <div class="form-group mb-5">
                         <label for="idr">Harga (IDR):</label>
                         <input type="number" name="idr" id="idr" class="form-control" required
                             placeholder="Inputkan nominal tanpa titik atau koma">
                         @error('idr')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
+                    </div>
+
+
+                    <div class="form-group mb-5" id="gambarContainer">
+                        <label for="gambar">Gambar Produk:</label>
+                        <div id="gambarInputs">
+                            <div class="input-group mb-2">
+                                <input type="file" name="gambar[]" class="form-control" accept="image/*"
+                                    style="width: 50%">
+                                <button type="button" class="remove-input btn btn-danger ml-2">Hapus</button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success" id="tambahInput">Tambah Gambar</button>
                     </div>
                     <button type="submit" class="btn btn-primary">Tambah</button>
                 </form>
@@ -88,20 +94,6 @@
 @endsection
 
 @section('script')
-    <script>
-        document.getElementById('add-produkakun').addEventListener('click', function() {
-            var container = document.getElementById('produkakun-container');
-            var newInput = document.createElement('div');
-            newInput.classList.add('produkakun-input', 'mb-3');
-            newInput.innerHTML = `
-            <label for="produkakun" class="form-label">Produk Akun:</label>
-            <input type="text" id="produk" name="produk[]" class="form-control bg-warning" required
-                                placeholder="ex* Email:xxxxxxx, Password:xxxxxxxxx" style="height: 100px;">
-        `;
-            container.appendChild(newInput);
-        });
-    </script>
-
     <script>
         $(document).ready(function() {
             $('#kategori_id').change(function() {
@@ -135,12 +127,39 @@
             tabsize: 2,
             height: 120,
             toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
+                ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video', 'hr']],
                 ['view', ['fullscreen', 'codeview', 'help']]
             ]
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tambahInputBtn = document.getElementById('tambahInput');
+            const gambarInputs = document.getElementById('gambarInputs');
+
+            tambahInputBtn.addEventListener('click', function() {
+                const newInput = document.createElement('div');
+                newInput.classList.add('input-group', 'mb-2');
+                newInput.innerHTML = `
+                <input type="file" name="gambar[]" class="form-control" accept="image/*" style="width: 50%" required>
+                <button type="button" class="remove-input btn btn-danger ml-2">Hapus</button>
+            `;
+                gambarInputs.appendChild(newInput);
+            });
+
+            gambarInputs.addEventListener('click', function(event) {
+                if (event.target.classList.contains('remove-input')) {
+                    event.target.closest('.input-group').remove();
+                }
+            });
         });
     </script>
 @endsection

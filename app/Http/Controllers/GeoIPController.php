@@ -9,32 +9,29 @@ use Illuminate\Support\Facades\Http;
 class GeoIPController extends Controller
 {
    
-    public function currencyconvertbylokasi(Request $request)
-    {
-        $location = GeoIP::getLocation($request->ip());
-        
-        $toCurrency = $location->currency;
+    public function currencyconvertbylokasi()
+{
+    $response = Http::get('https://api.currencybeacon.com/v1/convert', [
+        'from' => 'RUB',
+        'to' => 'IDR',
+        'amount' => 919.10, // Jumlah yang ingin Anda konversi
+        'api_key' => '1i4uihYk7lFb5JisqsMSrnckBKXhM2ul', // API Key Anda
+    ]);
 
-        $response = Http::get('https://api.currencybeacon.com/v1/convert', [
-            'from' => 'IDR',
-            'to' => $toCurrency,
-            'amount' => 15000, 
-            'api_key' => '1i4uihYk7lFb5JisqsMSrnckBKXhM2ul', 
+    if ($response->ok()) {
+        $conversionValue = $response['response']['value'];
+
+        return response()->json([
+            'toCurrency' => 'IDR', // Mata uang yang diinginkan
+            'fromCurrency' => 'RUB', // Mata uang asal
+            'fromAmount' => 919.10,
+            'convertedAmount' => $conversionValue
         ]);
-
-        if ($response->ok()) {
-            $conversionValue = $response['response']['value'];
-
-            return response()->json([
-                'toCurrency' => $toCurrency,
-                'fromCurrency' => 'IDR',
-                'fromAmount' => 15000,
-                'convertedAmount' => $conversionValue
-            ]);
-        }
-
-        return response()->json(['error' => 'Failed to fetch currency conversion data'], 500);
     }
+
+    return response()->json(['error' => 'Gagal untuk mengambil data konversi mata uang'], 500);
+}
+
 
     public function checkLocation(Request $request)
 {
